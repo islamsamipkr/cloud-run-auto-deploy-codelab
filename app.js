@@ -41,11 +41,11 @@ app.post("/update", async function (req, res) {
     let town = req.body.town;
     const doc = firestoreDb.doc(`demo/${name}`);
 
-    //TODO: fix this bug
-    await doc.set({
-        name: name
-        /* town: town */
-    });
+//fixed town bug
+await doc.set({
+    name: name,
+    town: town
+});
 
     res.send(`<div hx-target="this" hx-swap="outerHTML" hx-indicator="spinner">
                 <p>
