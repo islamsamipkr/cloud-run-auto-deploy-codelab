@@ -18,30 +18,72 @@ const revision = process.env.K_REVISION;
 app.use(express.static("public"));
 
 app.get("/edit", async (req, res) => {
-    res.send();
+    res.send(`<form hx-post="/update" hx-target="this" hx-swap="outerHTML">
+                <div>
+  <p>
+    <label>Name</label>    
+    <input class="border-2" type="text" name="name" value="Cloud">
+    </p><p>
+    <label>Town</label>    
+    <input class="border-2" type="text" name="town" value="Nibelheim">
+    </p>
+  </div>
+  <div class="flex items-center mr-[10px] mt-[10px]">
+  <button class="btn bg-blue-500 text-white px-4 py-2 rounded-lg text-center text-sm font-medium mr-[10px]">Submit</button>
+  <button class="btn bg-gray-200 text-gray-800 px-4 py-2 rounded-lg text-center text-sm font-medium mr-[10px]" hx-get="cancel">Cancel</button>  
+                ${spinnerSvg} 
+                </div>
+  </form>`);
 });
 
 app.post("/update", async function (req, res) {
     let name = req.body.name;
     let town = req.body.town;
-    const doc = firestoreDb.doc();
+    const doc = firestoreDb.doc(`demo/${name}`);
 
+    //TODO: fix this bug
     //fixed town bug
     await doc.set({
         name: name,
         town: town
     });
 
-    res.send();
+    res.send(`<div hx-target="this" hx-swap="outerHTML" hx-indicator="spinner">
+                <p>
+                <div><label>Name</label>: ${name}</div>
+                </p><p>
+                <div><label>Town</label>: ${town}</div>
+                </p>
+                <button
+                    hx-get="/edit"
+                    class="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium mt-[10px]"
+                >
+                    Click to update
+                </button>               
+            </div>`);
 });
 
 app.get("/cancel", (req, res) => {
-    res.send();
+    res.send(`<div hx-target="this" hx-swap="outerHTML">
+                <p>
+                <div><label>Name</label>: Cloud</div>
+                </p><p>
+                <div><label>Town</label>: Nibelheim</div>
+                </p>
+                <div>
+                <button
+                    hx-get="/edit"
+                    class="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium mt-[10px]"
+                >
+                    Click to update
+                </button>                
+                </div>
+            </div>`);
 });
 
 const port = parseInt(process.env.PORT) || 8080;
 app.listen(port, async () => {
-    console.log();
+    console.log(`booth demo: listening on port ${port}`);
 
     //serviceMetadata = helper();
 });
