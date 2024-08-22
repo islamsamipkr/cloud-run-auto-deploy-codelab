@@ -22,10 +22,10 @@ app.get("/edit", async (req, res) => {
                 <div>
   <p>
     <label>Name</label>    
-    <input class="border-2" type="text" name="name" value="Cloud">
+    <input class="border-2" type="text" name="name" value="typename">
     </p><p>
     <label>Town</label>    
-    <input class="border-2" type="text" name="town" value="Nibelheim">
+    <input class="border-2" type="text" name="town" value="typetown">
     </p>
   </div>
   <div class="flex items-center mr-[10px] mt-[10px]">
